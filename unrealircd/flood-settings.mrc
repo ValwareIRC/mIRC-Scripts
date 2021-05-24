@@ -121,7 +121,7 @@ dialog floodsettings {
   text "See this link for more information on UnrealIRCd's anti-flood feature:", 103, 5 160 150 14
   link "https://www.unrealircd.org/docs/Anti-flood_features", 104, 5 175 130 10
 }
-alias floodsettings mode $active | set %floodreq on
+alias floodsettings set %floodchan $active | mode $active | set %floodreq on
 on *:DIALOG:floodsettings:*:*:{
   if ($devent == init) && ($did == 0) {
     did -f $dname 100
