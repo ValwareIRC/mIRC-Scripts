@@ -76,10 +76,10 @@ dialog wyr {
   text "Author: V Pond", 41, 5 40 290 10, tab 3, center
   text "Date: 22/08/2020", 42, 5 50 290 10, tab 3, center
   text "Title: Would You Rather", 43, 5 60 290 10, tab 3, center
-  text "Version: 1.2", 44, 5 70 290 10, tab 3, center
+  text "Version: 0.1", 44, 5 70 290 10, tab 3, center
   link "https://valware.uk", 45, 130 90 100 10, tab 3
   link "irc.valware.uk", 46, 133 100 100 10, tab 3
-  link "v.a.pond@outlook.com", 47, 125 110 100 10, tab 3
+  link "v.a.pond@outlook.com", 47, 130 110 100 10, tab 3
 
   button "Close", 50, 260 185 30 10, ok
 
