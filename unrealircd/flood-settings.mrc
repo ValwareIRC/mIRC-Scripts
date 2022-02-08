@@ -206,7 +206,6 @@ on *:DIALOG:floodsettings:*:*:{
       did -r  $dname 3,10,12,14,20,22,24,30,32,34,40,42,44,50,52,54,60,62,64,70,72,74
     }
     if ($did == 101) || ($did == 102) {
-      echo -a $putmodef
       mode %floodchan $putmodef
     }
   }
