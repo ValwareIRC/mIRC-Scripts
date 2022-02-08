@@ -117,9 +117,10 @@ dialog floodsettings {
 
   button "Clear all", 100, 170 160 40 10
   button "Set and close", 101, 230 180 50 10, default
+  button "Apply", 102, 220 160 40 10
 
   text "See this link for more information on UnrealIRCd's anti-flood feature:", 103, 5 160 150 14
-  link "https://www.unrealircd.org/docs/Anti-flood_features", 104, 5 175 130 10
+  link "https://www.unrealircd.org/docs/Anti-flood_features", 104, 5 175 150 10
 }
 alias floodsettings set %floodchan $active | mode $active | set %floodreq on
 on *:DIALOG:floodsettings:*:*:{
@@ -128,9 +129,9 @@ on *:DIALOG:floodsettings:*:*:{
     didtok -a $dname 12 44 +C (default),+m,+M
     didtok -a $dname 22 44 +i (default),+R
     did -a $dname 32 +K (default)
-    didtok -a $dname 42 44 +m (default),M,drop
-    did -a $dname 52 +N (default)
-    didtok -a $dname 62 44 Kick (default),Ban,Drop
+    didtok -a $dname 42 44 +m (default),M
+    didtok -a $dname 52 44 Kick (default),Ban,Drop
+    did -a $dname 62 +N (default)
     didtok -a $dname 72 44 Kick (default),Ban,Drop
 
     did -a floodsettings 1 Here, you can easily make use of UnrealIRCd's anti-flood features in channels. $crlf $+ Obvious logic applies, i.e. you cannot "kick" someone for 3 minutes.
@@ -201,9 +202,11 @@ on *:DIALOG:floodsettings:*:*:{
     }
   }
   if ($devent == sclick) {
-
-    if ($did == 101) {
-
+    if ($did == 100) {
+      did -r  $dname 3,10,12,14,20,22,24,30,32,34,40,42,44,50,52,54,60,62,64,70,72,74
+    }
+    if ($did == 101) || ($did == 102) {
+      echo -a $putmodef
       mode %floodchan $putmodef
     }
   }
@@ -212,6 +215,7 @@ on *:DIALOG:floodsettings:*:*:{
 alias -l ftext return $did(floodsettings,$1).text
 alias -l fsel return $did(floodsettings,$1).sel
 alias putmodef {
+  %empty = true
   if ($ftext(10) > 0) {
     var %sel $fsel(12)
     if (%sel == 1) { var %action C }
@@ -219,6 +223,7 @@ alias putmodef {
     if (%sel == 3) { var %action M }
     var %c $ftext(10) $+ c $+ $iif(%action,$chr(35) $+ %action $+ $ftext(14)) $+ $chr(44)
     var %action
+    %empty = false
   }
   if ($ftext(20) > 0) {
     var %sel $fsel(22)
@@ -226,20 +231,22 @@ alias putmodef {
     if (%sel == 2) { var %action R }
     var %j $ftext(20) $+ j $+ $iif(%action,$chr(35) $+ %action $+ $ftext(24)) $+ $chr(44)
     var %action
+    %empty = false
   }
   if ($ftext(30) > 0) {
     var %sel $fsel(32)
     var %action K
     var %k $ftext(30) $+ k $+ $iif(%action,$chr(35) $+ %action $+ $ftext(34)) $+ $chr(44)
     var %action
+    %empty = false
   }  
   if ($ftext(40) > 0) {
     var %sel $fsel(42)
     if (%sel == 1) { var %action m }
     if (%sel == 2) { var %action M }
-    if (%sel == 3) { var %action d }
     var %m $ftext(40) $+ m $+ $iif(%action,$chr(35) $+ %action $+ $ftext(44)) $+ $chr(44)
     var %action
+    %empty = false
   }
   if ($ftext(50) > 0) {
     var %sel $fsel(52)
@@ -248,23 +255,26 @@ alias putmodef {
     if (%sel == 3) { var %action d }
     var %t $ftext(50) $+ t $+ $iif(%action,$chr(35) $+ %action $+ $ftext(54)) $+ $chr(44)
     var %action
+    %empty = false
   }
   if ($ftext(60) > 0) {
     var %sel $fsel(62)
     var %action N
     var %n $ftext(60) $+ n $+ $iif(%action,$chr(35) $+ %action $+ $ftext(64)) $+ $chr(44)
     var %action
+    %empty = false
   }
   if ($ftext(70) > 0) {
     var %sel $fsel(72)
     if (%sel == 2) { var %action b }
     if (%sel == 3) { var %action d }
     var %r $ftext(70) $+ r $+ $iif(%action,$chr(35) $+ %action $+ $ftext(74))
+    %empty = false
   }
   var %int $ftext(3)
 
   var %chmodef $+(%c,%j,%k,%m,%t,%n,%r)
-  if (!%chmodef) { return -f }
+  if (!%chmodef) { return -f * }
   if ($right(%chmodef,1) == $chr(44)) { var %chmodef $left(%chmodef,-1) }
   var %full $+($chr(91),%chmodef,$chr(93),:,%int)
   return +f %full
