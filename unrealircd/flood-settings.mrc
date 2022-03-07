@@ -1,6 +1,6 @@
 #############################################
 #         UnrealIRCd Flood Settings         #
-#            v.1                            #
+#            v.0.0.0.0.1-beta.0.1           #
 #                 Valware ©                 #
 #         https://valware.uk/github         #
 #############################################
@@ -116,7 +116,8 @@ dialog floodsettings {
   button "Clear", 76, 200 138 30 10
 
   button "Clear all", 100, 170 160 40 10
-  button "Set and close", 101, 230 180 50 10, default
+  button "Set and close", 101, 230 180 50 10, default ok
+
   button "Apply", 102, 220 160 40 10
 
   text "See this link for more information on UnrealIRCd's anti-flood feature:", 103, 5 160 150 14
