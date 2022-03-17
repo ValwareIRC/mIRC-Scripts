@@ -7,7 +7,7 @@ RAW *:*:{
       tokenize 32 %string
       if (external-reg isin $1) {
         %extreglink = $gettok($1,2,61)
-        open_reg_link_dialog $server %link
+        open_reg_link_dialog $server %extreglink
         break
       }
       else {
