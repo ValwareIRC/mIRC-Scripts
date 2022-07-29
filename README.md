@@ -1,2 +1,2 @@
 # mIRC-Scripts
-mIRC Scripts that @ValwareIRC made
+mIRC Scripts that I made
