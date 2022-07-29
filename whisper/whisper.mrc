@@ -15,7 +15,7 @@ alias whisper {
     echo -at You are not on a channel
     return
   }
-  if ($left(%nick,1) == $chr(35)) {
+  if ($left(%nick,1) isin $chantypes) {
     echo -at * You cannot whisper to a channel
     return
   }
