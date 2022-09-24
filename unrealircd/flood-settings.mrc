@@ -127,13 +127,13 @@ alias floodsettings set %floodchan $active | mode $active | set %floodreq on
 on *:DIALOG:floodsettings:*:*:{
   if ($devent == init) && ($did == 0) {
     did -f $dname 100
-    didtok -a $dname 12 44 +C (default),+m,+M
-    didtok -a $dname 22 44 +i (default),+R
+    didtok $dname 12 44 +C (default),+m,+M
+    didtok $dname 22 44 +i (default),+R
     did -a $dname 32 +K (default)
-    didtok -a $dname 42 44 +m (default),M
-    didtok -a $dname 52 44 Kick (default),Ban,Drop
+    didtok $dname 42 44 +m (default),M
+    didtok $dname 52 44 Kick (default),Ban,Drop
     did -a $dname 62 +N (default)
-    didtok -a $dname 72 44 Kick (default),Ban,Drop
+    didtok $dname 72 44 Kick (default),Ban,Drop
 
     did -a floodsettings 1 Here, you can easily make use of UnrealIRCd's anti-flood features in channels. $crlf $+ Obvious logic applies, i.e. you cannot "kick" someone for 3 minutes.
     var %position_of_floodchar $poscs(%unrealcc.extchars,f)
