@@ -4,6 +4,7 @@ on *:PARSELINE:in:*:{
     tokenize 32 $2-
   }
   else tokenize 32 $1-
+  if (. isin $1)  tokenize 32 $2-
   %s = $1
   %cmd = $2
   %code = $iif($left($3,1) !== $chr(58),(Error code: $3 $+ ),$null)
