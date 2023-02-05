@@ -19,10 +19,10 @@ on *:PARSELINE:in:*:{
 
   if (!%IsNew) { return }
   if ($server == $scid($activecid).server) {
-    if ($GetWhoisBufferOption) { echo -at $4 is connecting from $9 ( $+ $5 $+ ) }
-    else { echo -st $4 is connecting from $9 ( $+ $5 $+ ) }
+    if ($GetWhoisBufferOption) { echo -at $4 is connecting from $9- ( $+ $5 $+ ) }
+    else { echo -st $4 is connecting from $9- ( $+ $5 $+ ) }
   }
-  else { echo -st $4 is connecting from $9 ( $+ $5 $+ ) }
+  else { echo -st $4 is connecting from $9- ( $+ $5 $+ ) }
 }
 
 
