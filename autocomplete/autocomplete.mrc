@@ -23,7 +23,7 @@ on *:PARSELINE:in:*:{
     var %check = $right($3,-1)
     if (%add) writeini cmds.ini $right($1,-1) list $readini(cmds.ini, $right($1,-1), list) %check $+ ,
     else if (!%add) writeini cmds.ini $right($1,-1) list $replace($readini(cmds.ini, $right($1,-1), list), $+($chr(32),%check,$chr(44)), $null)
-    ;.parseline -it
+    .parseline -it
   }
   else return
 }
