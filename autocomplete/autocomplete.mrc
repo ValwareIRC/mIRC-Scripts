@@ -2,9 +2,10 @@
 ; LICENSE: GPLv3-or-later
 ; AUTHOR: Valware
 ;
+; Special thanks to Koragg
 ; This script works with the third/cmdslist UnrealIRCd module
 ;
-; Suggests and auto-completes 
+; Suggests and auto-completes /commands using the tab button.
 
 on *:PARSELINE:in:*:{
   var %cap valware.uk/cmdslist
@@ -28,9 +29,6 @@ on *:PARSELINE:in:*:{
   else return
 }
 
-; Special thanks to Koragg for pointing out I
-; can use TABCOMP instead of some F-key alias
-; <3
 on *:TABCOMP:*:{
   tokenize 32 $editbox($active)
   if ($left($1,1) != /) return
