@@ -7,6 +7,8 @@
 ;
 ; Suggests and auto-completes /commands using the tab button.
 
+alias -l ini_file { return cmds.ini } ; the commands INI file
+
 on *:PARSELINE:in:*:{
   var %cap valware.uk/cmdslist
   tokenize 32 $parseline
@@ -16,14 +18,14 @@ on *:PARSELINE:in:*:{
   }
   if ($2 == CAP) && ($4 == LS) {
     if (%cap isin $5-) {
-      cap req %cap | remini cmds.ini $right($1,-1) list | cmdslist
+      cap req %cap | remini $qt($ini_file) $right($1,-1) list | cmdslist
     }
   }
   else if ($2 == CMDSLIST) {
     var %add $iif($left($3,1) == +, $true, $false)
     var %check = $right($3,-1)
-    if (%add) writeini cmds.ini $right($1,-1) list $readini(cmds.ini, $right($1,-1), list) %check $+ ,
-    else if (!%add) writeini cmds.ini $right($1,-1) list $replace($readini(cmds.ini, $right($1,-1), list), $+($chr(32),%check,$chr(44)), $null)
+    if (%add) writeini $qt($ini_file) $right($1,-1) list $readini($ini_file,n, $right($1,-1), list) %check $+ ,
+    else if (!%add) writeini $qt($ini_file) $right($1,-1) list $replace($readini($ini_file,n, $right($1,-1), list), $+($chr(32),%check,$chr(44)), $null)
     .parseline -it
   }
   else return
@@ -46,7 +48,7 @@ on *:TABCOMP:*:{
 
 alias valware.lookup.command {
   var %server $1
-  var %commands $readini(cmds.ini, %server, list)
+  var %commands $readini($ini_file, %server, list)
   if (!%commands) return
   var %i 1
   var %found 0
@@ -67,7 +69,7 @@ alias valware.lookup.command {
 }
 
 alias commands {
-  var %data $readini(cmds.ini, $server, list)
+  var %data $readini($ini_file,n, $server, list)
   if (%data) { 
     var %it 1
     while (%it < $numtok(%data,44)) {
@@ -82,4 +84,3 @@ alias commands {
   ;; fallback lmao
   else helpop usercmds
 }
-
