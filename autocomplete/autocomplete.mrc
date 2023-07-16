@@ -38,9 +38,6 @@ on *:TABCOMP:*:{
   }
   set %commandLookup $right($1,-1)
   valware.lookup.command $server
-  if (%[ $+ [ $server $+ ] .i < 1) {
-    echo -at -AutoComplete- No suggestion for ' $commandLookup $+ '
-  }
   unset %commandLookup
 }
 
