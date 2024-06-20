@@ -12,10 +12,10 @@ alias geticon {
   sockmark geticon $2-
 }
 on *:sockopen:geticon: {
-  if ($sockerr) return
+  if ($sockerr) { echo -a Aaaaa $sockerr | return }
   var %s = sockwrite -n $sockname, %f = $sock($sockname).mark
   sockmark $sockname
-  .fopen -o down $qt($gettok(%f,-1,47))
+  .fopen -o geticon $qt($gettok(%f,-1,47))
   %s GET %f HTTP/1.1
   %s Host: $sock($sockname).addr
   %s User-Agent: mIRC $version
@@ -57,10 +57,10 @@ RAW 005:*ICON=*:{
   var %i = 1
   while ($gettok($1-,%i,32) != $null) {
     if ($left($gettok($1-,%i,32),5) == ICON=) {
-    
+
       ;; mIRC sucks, I had to do this just to split up the
       ;; ICON token and correctly parse the given URL
-     
+
       %url = $right($gettok($1-,%i,32),-5)
       if ($left(%url,7) == http://) %url = $right(%url,-7)
       if ($left(%url,8) == https://) %url = $right(%url,-8)
