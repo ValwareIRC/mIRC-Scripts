@@ -76,6 +76,7 @@ on *:DISCONNECT:{
   ;; check if there are any other connections from our client before we start deleting stuff
   if (!$checkForMultipleConnections) && ($status == connected) remove TypingNotifs/ $+ $server $+ -typing.ini
 }
+on *:KICK:#:RemoveTyping $server $chan $knick
 on *:PART:#:RemoveTyping $server $chan $nick
 on *:NICK:{
   while (%i <= $comchan($nick,0)) {
