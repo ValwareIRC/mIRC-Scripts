@@ -2,15 +2,22 @@
 ;; https://github.com/ValwareIRC
 ;;
 ;; Better Typing Notifications
-;; v1.0
+;; v1.2
 ;; Please allow this script to run on load,
 ;; this is so that it can create its own
 ;; directory to manage typing notifications
 ;; using files to remember what's going on
 
 on *:LOAD:{
+  ensureDir
+}
+on *:START:{
+  ensureDir
+}
+
+alias -l ensureDir {
   set %unableToCreateDir $false
-  if ($isdir($mircdirTypingNotifs)) return
+  if ($isdir($mircdirTypingNotifs)) return $true
   echo -at ~~ ^__^ Thank you so much for checking out the Typing Notifications script.
   echo -at ~~ Just gotta make a directory! La la la...
   .mkdir " $+ $mircdirTypingNotifs $+ "
@@ -20,10 +27,12 @@ on *:LOAD:{
     echo -at ~~ I only need it for tidiness. Please could you create it? It needs to be called:
     echo -at ~~  $+ $mircdirTypingNotifs
     echo -at ~~ ~~**~~
+    return $false
   }
   else {
     set %unableToCreateDir $false
     echo -at ~~ Created! Yay, can't wait for you to see how it works! =]
+    return $true
   }
 }
 
@@ -32,11 +41,8 @@ on *:ACTIVE:#:{
   if ($len($editbox($active,1)) == 0) {
     editbox -ovq1 $active
   }
-  set %unableToCreateDir $iif($isdir,$false,$true)
-  if (!$isdir($mircdirTypingNotifs)) || (%unableToCreateDir == $false) || (%unableToCreateDir == $null) {
-    echo -at ~~ Did you create that directory yet? => /mkdir $mircdirTypingNotifs
-  }
 }
+
 alias AddTyping {
   if ($readini($server $+ -typing.ini,$2,$3) != $null) return
   writeini TypingNotifs/ $+ $1 $+ -typing.ini $2 $3 active
@@ -57,9 +63,15 @@ alias GetTyping {
   editbox -o $1 Typing: $iif($len($right(%string,-8)) <= 0,(none),$right(%string,-8))
 }
 
+alias RemoveAndClear {
+  RemoveTyping $1-
+  GetTyping $2
+}
+
 RAW TAGMSG:*:{
-  if ($msgtags(+typing).key == active) AddTyping $server $target $nick
-  else RemoveTyping $server $target $nick
+  ; User is typing. Show us and set a 6 second timer to remove it. If they typed between now and then, the timer restarts.
+  if ($msgtags(+typing).key == active) AddTyping $server $target $nick | .timer $+ $+($server,$target,$nick) 1 6 RemoveAndClear $server $target $nick
+  else if ($msgtags(+typing).key == paused) || ($msgtags(+typing).key == done) RemoveTyping $server $target $nick
   GetTyping $target
 }
 
@@ -72,9 +84,10 @@ on *:QUIT:{
   }
 }
 
+on *:TEXT:*:#:RemoveTyping $server $chan $nick
 on *:DISCONNECT:{
   ;; check if there are any other connections from our client before we start deleting stuff
-  if (!$checkForMultipleConnections) && ($status == connected) remove TypingNotifs/ $+ $server $+ -typing.ini
+  remove TypingNotifs/ $+ $server $+ -typing.ini
 }
 on *:KICK:#:RemoveTyping $server $chan $knick
 on *:PART:#:RemoveTyping $server $chan $nick
@@ -84,19 +97,11 @@ on *:NICK:{
     inc %i
   }
 }
+on *:CONNECT:{
+  .remove TypingNotifs/ $+ $server $+ -typing.ini
+}
 
-alias checkForMultipleConnections {
-  var %i 0
-  var %currentServer = $scid($cid).server
-  echo -at %currentServer
-  while (%i <= $scon(0)) {
-    inc %i
-    if (!$scon(%i)) continue
-    if ($scon(%i).status != connected) continue
-    if ($scon(%i).server != %currentServer) continue
-
-    ; satisfied we're connected to the server from another window
-    return 1    
-  }
-  return 0
+on *:PARSELINE:out:*:{
+  tokenize 32 $parseline
+  if ($1 == CAP) && ($2 == REQ) && (echo-message !isin $3-) { parseline -ton cap req :echo-message $right($3-,-1) | haltdef }
 }
