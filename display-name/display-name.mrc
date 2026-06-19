@@ -1,7 +1,7 @@
-# This is a script which allows you to see and send the IRCv3 proposed `display-name` message-tag
-# You can set your display name by typing /displayname WeeWoo
-# Must be connected to a server which supports message-tags, or if unrealircd, you'll need to load my module:
-# https://github.com/ValwareIRC/valware-unrealircd-mods/tree/main/display-name
+;# This is a script which allows you to see and send the IRCv3 proposed `display-name` message-tag
+;# You can set your display name by typing /displayname WeeWoo
+;# Must be connected to a server which supports message-tags, or if unrealircd, you'll need to load my module:
+;# https://github.com/ValwareIRC/valware-unrealircd-mods/tree/main/display-name
 
 on ^*:TEXT:*:*:{
   %display = $msgtags(+draft/display-name).key

@@ -1,5 +1,5 @@
-# Simple script to fix the displaying of GEOIP whois numeric data
-# Valware © 2022
+;# Simple script to fix the displaying of GEOIP whois numeric data
+;# Valware © 2022
 
 on *:PARSELINE:in:*:{
 
