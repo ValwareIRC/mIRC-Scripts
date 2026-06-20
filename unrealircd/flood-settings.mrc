@@ -1,9 +1,9 @@
-#############################################
-#         UnrealIRCd Flood Settings         #
-#            v.0.0.0.0.1-beta.0.1           #
-#                 Valware ©                 #
-#         https://valware.uk/github         #
-#############################################
+;#############################################
+;#         UnrealIRCd Flood Settings         #
+;#            v.0.0.0.0.1-beta.0.1           #
+;#                 Valware ©                 #
+;#         https://valware.uk/github         #
+;#############################################
 
 
 menu channel {
